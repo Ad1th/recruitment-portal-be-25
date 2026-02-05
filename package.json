@@ -4,8 +4,8 @@
   "description": "MFC Recruitment Portal Backend",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js",
-    "generate":"node api/utils/generateSlots.js"
+    "start": "node index.js",
+    "generate": "node api/utils/generateSlots.js"
   },
   "author": "Abhinav Garg",
   "license": "ISC",
