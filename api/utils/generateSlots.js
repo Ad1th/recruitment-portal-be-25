@@ -1,4 +1,6 @@
-require("dotenv").config();
+require("dotenv").config({
+  path: require("path").resolve(__dirname, "../../.env"),
+});
 const mongoose = require("mongoose");
 const connectDb = async () => {
   try {
@@ -11,14 +13,14 @@ const connectDb = async () => {
 };
 const interviewSlotSchema = new mongoose.Schema({
   slotNumber: { type: Number, required: true, unique: true },
-  bookedCount: { type: Number, default: 0 }, 
+  bookedCount: { type: Number, default: 0 },
   startTime: Date,
   endTime: Date,
-  status: { type: String, enum: ["free", "full"], default: "free" }, 
+  status: { type: String, enum: ["free", "full"], default: "free" },
 });
 const InterviewSlot = mongoose.model("InterviewSlot", interviewSlotSchema);
-const START_DATE = new Date("2025-12-10T18:00:00+05:30"); 
-const END_DATE = new Date("2025-12-12T00:00:00+05:30");   
+const START_DATE = new Date("2025-2-13T21:00:00+05:30");
+const END_DATE = new Date("2025-2-14T01:00:00+05:30");
 const SLOT_DURATION_MINS = 20;
 const MAX_BOOKINGS_PER_SLOT = 3; // ]
 async function seedSlots() {
@@ -32,7 +34,9 @@ async function seedSlots() {
     let slotCounter = 1;
 
     while (currentTime < END_DATE) {
-      const nextTime = new Date(currentTime.getTime() + SLOT_DURATION_MINS * 60000);
+      const nextTime = new Date(
+        currentTime.getTime() + SLOT_DURATION_MINS * 60000,
+      );
 
       if (nextTime > END_DATE) break;
 
@@ -50,9 +54,11 @@ async function seedSlots() {
     await InterviewSlot.insertMany(slots);
     console.log(`Successfully created ${slots.length} slots.`);
     console.log(`Each slot allows ${MAX_BOOKINGS_PER_SLOT} bookings.`);
-    console.log("First Slot:", slots[0].startTime.toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }));
-  } 
-  catch (err) {
+    console.log(
+      "First Slot:",
+      slots[0].startTime.toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
+    );
+  } catch (err) {
     console.error("Error seeding slots:", err);
   } finally {
     mongoose.connection.close();

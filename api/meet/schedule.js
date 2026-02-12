@@ -17,19 +17,19 @@ const INTERVIEWERS = [
   "pranjal.sahay2024@vitstudent.ac.in",
   "dakshata.abhyankar2024@vitstudent.ac.in",
   "arshia.ghosh2024@vitstudent.ac.in",
-  "sarthak.jain2024@vitstudent.ac.in",
-  "anurag.thakur2024@vitstudent.ac.in",
+  // "sarthak.jain2024@vitstudent.ac.in",
+  // "anurag.thakur2024@vitstudent.ac.in",
   "aadya.agarwal2024b@vitstudent.ac.in",
-  "ritwin.as2024@vitstudent.ac.in",
+  // "ritwin.as2024@vitstudent.ac.in",
   "traya.jawahar2024@vitstudent.ac.in",
   "neha.damani2024@vitstudent.ac.in",
-  "shubham.mishra2024@vitstudent.ac.in",
+  // "shubham.mishra2024@vitstudent.ac.in",
   "pooja.goel2023@vitstudent.ac.in",
   "riyan.johnson2024@vitstudent.ac.in",
-  "anuraag.chakraborty2024@vitstudent.ac.in",
+  // "anuraag.chakraborty2024@vitstudent.ac.in",
   "aayush.keshwani2024@vitstudent.ac.in",
-  "shreya.yadav2024@vitstudent.ac.in",
-  "jaanya.bagdi2024@vitstudent.ac.in",
+  // "shreya.yadav2024@vitstudent.ac.in",
+  // "jaanya.bagdi2024@vitstudent.ac.in",
   "manya.praveensingh2024@vitstudent.ac.in",
   "rishita.khetan2024@vitstudent.ac.in",
 ];
@@ -286,7 +286,7 @@ const scheduleMeeting = async (req, res) => {
     const oauth = new google.auth.OAuth2(
       process.env.GOOGLE_CLIENT_ID,
       process.env.GOOGLE_CLIENT_SECRET,
-      process.env.GOOGLE_REDIRECT_URI
+      process.env.GOOGLE_REDIRECT_URI,
     );
     oauth.setCredentials({ refresh_token: adminUser.googleRefreshToken });
     const calendar = google.calendar({ version: "v3", auth: oauth });
@@ -430,7 +430,7 @@ const cancelMeeting = async (req, res) => {
     const oauth = new google.auth.OAuth2(
       process.env.GOOGLE_CLIENT_ID,
       process.env.GOOGLE_CLIENT_SECRET,
-      process.env.GOOGLE_REDIRECT_URI
+      process.env.GOOGLE_REDIRECT_URI,
     );
     oauth.setCredentials({ refresh_token: adminUser.googleRefreshToken });
     const calendar = google.calendar({ version: "v3", auth: oauth });
@@ -443,7 +443,7 @@ const cancelMeeting = async (req, res) => {
     } catch (googleError) {
       console.warn(
         "Google Event not found or already deleted:",
-        googleError.message
+        googleError.message,
       );
     }
 
