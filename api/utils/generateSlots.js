@@ -26,7 +26,7 @@ const InterviewSlot = mongoose.model("InterviewSlot", interviewSlotSchema);
 const IST_OFFSET = "+05:30";
 
 const RANGE_START = new Date(`2026-02-13T21:00:00${IST_OFFSET}`); 
-const RANGE_END   = new Date(`2026-02-27T01:00:00${IST_OFFSET}`); 
+const RANGE_END   = new Date(`2026-02-21T01:00:00${IST_OFFSET}`); 
 
 const DAILY_START_HOUR = 21; 
 const DAILY_END_HOUR = 1;    
