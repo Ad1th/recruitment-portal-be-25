@@ -1,4 +1,6 @@
-require("dotenv").config();
+require("dotenv").config({
+  path: require("path").resolve(__dirname, "../../.env"),
+});
 const mongoose = require("mongoose");
 
 const connectDb = async () => {
@@ -14,23 +16,14 @@ const connectDb = async () => {
 const interviewSlotSchema = new mongoose.Schema({
   slotNumber: { type: Number, required: true, unique: true },
   bookedCount: { type: Number, default: 0 },
-  startTime: { type: Date, required: true },
-  endTime: { type: Date, required: true },
+  startTime: Date,
+  endTime: Date,
   status: { type: String, enum: ["free", "full"], default: "free" },
 });
 
 const InterviewSlot = mongoose.model("InterviewSlot", interviewSlotSchema);
-
-/* ================= CONFIG ================= */
-
-const IST_OFFSET = "+05:30";
-
-const RANGE_START = new Date(`2026-02-13T21:00:00${IST_OFFSET}`); 
-const RANGE_END   = new Date(`2026-02-21T01:00:00${IST_OFFSET}`); 
-
-const DAILY_START_HOUR = 21; 
-const DAILY_END_HOUR = 1;    
-
+const START_DATE = new Date("2025-2-13T21:00:00+05:30");
+const END_DATE = new Date("2025-2-14T01:00:00+05:30");
 const SLOT_DURATION_MINS = 20;
 const MAX_BOOKINGS_PER_SLOT = 3;
 const TOTAL_SLOTS_REQUIRED = 504;
@@ -46,7 +39,10 @@ async function seedSlots() {
     const slots = [];
     let slotCounter = 1;
 
-    let currentDay = new Date(RANGE_START);
+    while (currentTime < END_DATE) {
+      const nextTime = new Date(
+        currentTime.getTime() + SLOT_DURATION_MINS * 60000,
+      );
 
     while (slots.length < TOTAL_SLOTS_REQUIRED) {
       const dayStart = new Date(currentDay);
@@ -89,20 +85,12 @@ async function seedSlots() {
     }
 
     await InterviewSlot.insertMany(slots);
-
-    console.log(`Successfully created ${slots.length} slots`);
-    console.log(`Max capacity (slots * ${MAX_BOOKINGS_PER_SLOT}): ${slots.length * MAX_BOOKINGS_PER_SLOT}`);
+    console.log(`Successfully created ${slots.length} slots.`);
+    console.log(`Each slot allows ${MAX_BOOKINGS_PER_SLOT} bookings.`);
     console.log(
-      "First slot:",
-      slots[0].startTime.toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })
+      "First Slot:",
+      slots[0].startTime.toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
     );
-    console.log(
-      "Last slot:",
-      slots[slots.length - 1].endTime.toLocaleString("en-IN", {
-        timeZone: "Asia/Kolkata",
-      })
-    );
-
   } catch (err) {
     console.error("Error seeding slots:", err);
   } finally {
