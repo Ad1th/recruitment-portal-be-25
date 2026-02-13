@@ -249,6 +249,10 @@ const scheduleMeeting = async (req, res) => {
     // Convert string to Date object for accurate comparison
     const requestedTime = new Date(scheduletime);
 
+    if (requestedTime < new Date()) {
+      return res.status(400).json({ error: "Cannot book slots in the past." });
+    }
+
     //Find slot by matching the startTime in the DB
     const slotDoc = await InterviewSlot.findOne({ startTime: requestedTime });
 
